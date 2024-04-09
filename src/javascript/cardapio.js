@@ -163,11 +163,29 @@ hamburgueres.forEach((hamburguer) => {
   });
   itemDiv.appendChild(ingredientesList);
 
+  // Cria uma div para o preço e o botão de carrinho
+  const precoButtonDiv = document.createElement("div");
+  precoButtonDiv.classList.add("preco-button-div");
+
   // Adiciona o preço do item
   const preco = document.createElement("p");
   preco.textContent = `R$ ${hamburguer.valor.toFixed(2)}`;
-  itemDiv.appendChild(preco);
+  precoButtonDiv.appendChild(preco);
 
-  // Adiciona o item ao cardápio
-  cardapio.appendChild(itemDiv);
+  // Cria o botão de carrinho
+  const cartButton = document.createElement("button");
+  cartButton.classList.add("btn-default");
+
+  // Adiciona o ícone ao botão
+  const iconButton = document.createElement("i");
+  iconButton.classList.add("fa-solid", "fa-basket-shopping");
+  cartButton.appendChild(iconButton);
+
+  precoButtonDiv.appendChild(cartButton);
+
+  // Adiciona a div de preço e botão de carrinho ao itemDiv
+  itemDiv.appendChild(precoButtonDiv);
+
+  // Adiciona o item ao cardápioContent, não ao cardapio
+  cardapioContent.appendChild(itemDiv); // Corrigido o elemento de destino
 });

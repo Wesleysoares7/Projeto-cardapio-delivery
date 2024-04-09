@@ -3,12 +3,74 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./src/styles/styles.css" />
     <title>Cardápio</title>
   </head>
   <body>
-    <div class="cardapio-content">
-      <div class="cardapio"></div>
-    </div>
+    <header>
+      <nav id="navbar">
+        <i class="fa-solid fa-burger" id="nav_logo"> Food</i>
+        <ul id="nav_list">
+          <li class="nav-item active">
+            <a href="#">Mais Pedidos</a>
+          </li>
+          <li class="nav-item">
+            <a href="#">Promoção</a>
+          </li>
+          <li class="nav-item">
+            <a href="#">Combos</a>
+          </li>
+        </ul>
+        <button class="btn-default">Carinho</button>
+        <button id="mobile_btn">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </nav>
+      <div id="mobile_menu">
+        <ul id="mobile_nav_list">
+          <li class="nav-item">
+            <a href="#home">Início</a>
+          </li>
+          <li class="nav-item">
+            <a href="#menu">Cardápio</a>
+          </li>
+          <li class="nav-item">
+            <a href="#testimonials">Avaliações</a>
+          </li>
+        </ul>
+        <button class="btn-default">Peça aqui</button>
+      </div>
+    </header>
+    <section id="menu_cardapio">
+      <div class="cardapio-content">
+        <div class="cardapio"></div>
+      </div>
+    </section>
+    <footer>
+      <img src="./src/imagens/wave.svg" alt="" />
+      <div id="footer_items">
+        <span id="copyright"> &copy 2024 WSSoluções Web </span>
+
+        <div class="social-media-buttons">
+          <a href="">
+            <i class="fa-brands fa-whatsapp"></i>
+          </a>
+          <a href="">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="">
+            <i class="fa-brands fa-facebook"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
     <script src="./src/javascript/cardapio.js"></script>
   </body>
 </html>

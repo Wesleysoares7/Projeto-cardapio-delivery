@@ -1,3 +1,10 @@
+const cardapioContent = document.querySelector(".cardapio-content");
+const cardapioDrinks = document.querySelector(".cardapio-drinks");
+const cartButton = document.querySelector(".btn-default");
+const cartCounter = document.querySelector("#cart-count");
+const basketButton = document.querySelector("#cart-btn");
+const openModal = document.querySelector(".hidden");
+
 const hamburgueres = [
   {
     id: 1,
@@ -206,12 +213,6 @@ const drinks = [
   },
 ];
 
-const cardapioContent = document.querySelector(".cardapio-content");
-const cardapioDrinks = document.querySelector(".cardapio-drinks");
-const cardapioButton = document.querySelector(".bnt-default");
-const cartButton = document.querySelector("#cart-btn");
-const cartCounter = document.querySelector("#cart-count");
-
 // Itera sobre cada item do cardápio
 hamburgueres.forEach((hamburguer) => {
   // Cria um elemento div para representar cada item do cardápio
@@ -333,4 +334,14 @@ function addItemToCart() {
 const cartButtons = document.querySelectorAll(".btn-default");
 cartButtons.forEach((button) => {
   button.addEventListener("click", addItemToCart);
+});
+
+basketButton.addEventListener("click", () => {
+  openModal.style.display = "flex";
+});
+
+openModal.addEventListener("click", (event) => {
+  if (event.target === openModal) {
+    openModal.style.display = "none";
+  }
 });

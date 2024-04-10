@@ -28,7 +28,9 @@
             <a href="#">Combos</a>
           </li>
         </ul>
-        <button class="btn-default">Carinho</button>
+        <button class="btn-default" id="cart-btn">
+          (<span id="cart-count">0</span>) Meu carrinho
+        </button>
         <button id="mobile_btn">
           <i class="fa-solid fa-bars"></i>
         </button>
@@ -48,11 +50,33 @@
         <button class="btn-default">Peça aqui</button>
       </div>
     </header>
-    <section id="menu_cardapio">
+    <section id="burgers_refris">
       <div class="cardapio-content">
-        <div class="cardapio"></div>
+        <div class="cardapio-burgers"></div>
+      </div>
+      <div class="cardapio-content-drinks">
+        <div class="cardapio-drinks"></div>
       </div>
     </section>
+    <div class="hidden" id="cart-modal">
+      <div id="modal">
+        <h2>Meu Carrinho</h2>
+
+        <div id="cart-items"></div>
+        <p>Total: <span id="cart-total">0.00</span></p>
+        <p>Endereço de entrega:</p>
+        <input
+          type="text"
+          placeholder="Digite seu endereço completo..."
+          id="address"
+        />
+        <p id="address-warn">Digite seu endereço completo!</p>
+        <div id="buttons_modal">
+          <button class="close" id="close-modal-btn">Fechar</button>
+          <button class="finish" id="checkout-btn">Finalizar pedido</button>
+        </div>
+      </div>
+    </div>
     <footer>
       <img src="./src/imagens/wave.svg" alt="" />
       <div id="footer_items">

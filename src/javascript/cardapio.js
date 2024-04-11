@@ -375,11 +375,11 @@ updateCartModal = () => {
   cart.forEach((item) => {
     const cartItemElement = document.createElement("div");
     cartItemElement.innerHTML = `
-    <div>
+    <div class="cart-conteiner">
       <div>
         <p>${item.name}</p>
-        <p>${item.quantity}</p>
-        <p>${item.price.toFixed(2)}</p>
+        <p>Qnt: ${item.quantity}</p>
+        <p>Vlr R$: ${item.price.toFixed(2)}</p>
       </div>
 
       <button class="remove-from-cart-btn" data-name="${item.name}">

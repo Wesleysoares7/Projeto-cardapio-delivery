@@ -1,9 +1,17 @@
 const cardapioContent = document.querySelector(".cardapio-content");
 const cardapioDrinks = document.querySelector(".cardapio-drinks");
-const cartButton = document.querySelector(".btn-default");
 const cartCounter = document.querySelector("#cart-count");
 const basketButton = document.querySelector("#cart-btn");
 const openModal = document.querySelector(".hidden");
+const cartItemsContainer = document.querySelector("#cart-items");
+const cartTotal = document.querySelector("#cart-total");
+const menu = document.querySelector("#burgers_refris");
+const closeButtonModal = document.querySelector("#close-modal-btn");
+const addressInput = document.querySelector("#address");
+const addressWarn = document.querySelector("#address-warn");
+const checkoutButton = document.querySelector("#checkout-btn");
+
+let cart = [];
 
 const hamburgueres = [
   {
@@ -250,7 +258,9 @@ hamburgueres.forEach((hamburguer) => {
 
   // Cria o botão de carrinho
   const cartButton = document.createElement("button");
-  cartButton.classList.add("btn-default");
+  cartButton.classList.add("add-to-cart-btn");
+  cartButton.setAttribute("data-name", hamburguer.name);
+  cartButton.setAttribute("data-price", hamburguer.price.toFixed(2)); // Adicionando atributos data-name e data-price
 
   // Adiciona o ícone ao botão
   const iconButton = document.createElement("i");
@@ -299,7 +309,9 @@ drinks.forEach((drink) => {
 
   // Cria o botão de carrinho
   const cartButton = document.createElement("button");
-  cartButton.classList.add("btn-default");
+  cartButton.classList.add("add-to-cart-btn");
+  cartButton.setAttribute("data-name", drink.name);
+  cartButton.setAttribute("data-price", drink.price.toFixed(2)); // Adicionando atributos data-name e data-price
 
   // Adiciona o ícone ao botão
   const iconButton = document.createElement("i");
@@ -315,28 +327,8 @@ drinks.forEach((drink) => {
   cardapioDrinks.appendChild(itemDiv);
 });
 
-// Função para adicionar item ao carrinho
-function addItemToCart() {
-  // Seleciona o contador do carrinho
-  const cartCounter = document.querySelector("#cart-count");
-
-  // Obtém o valor atual do contador e converte para número
-  let currentCount = parseInt(cartCounter.textContent);
-
-  // Incrementa o contador
-  currentCount++;
-
-  // Atualiza o texto do contador
-  cartCounter.textContent = currentCount;
-}
-
-// Itera sobre cada botão de carrinho e adiciona um ouvinte de evento de clique
-const cartButtons = document.querySelectorAll(".btn-default");
-cartButtons.forEach((button) => {
-  button.addEventListener("click", addItemToCart);
-});
-
 basketButton.addEventListener("click", () => {
+  updateCartModal();
   openModal.style.display = "flex";
 });
 
@@ -345,3 +337,155 @@ openModal.addEventListener("click", (event) => {
     openModal.style.display = "none";
   }
 });
+
+closeButtonModal.addEventListener("click", () => {
+  openModal.style.display = "none";
+});
+
+menu.addEventListener("click", (event) => {
+  // console.log(event.target);
+
+  let parentButton = event.target.closest(".add-to-cart-btn");
+
+  if (parentButton) {
+    const name = parentButton.getAttribute("data-name");
+    const price = parseFloat(parentButton.getAttribute("data-price"));
+    addToCart(name, price);
+  }
+});
+
+addToCart = (name, price) => {
+  const existingItem = cart.find((item) => item.name === name);
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      name,
+      price,
+      quantity: 1,
+    });
+  }
+  updateCartModal();
+};
+
+updateCartModal = () => {
+  cartItemsContainer.innerHTML = "";
+  let total = 0;
+
+  cart.forEach((item) => {
+    const cartItemElement = document.createElement("div");
+    cartItemElement.innerHTML = `
+    <div>
+      <div>
+        <p>${item.name}</p>
+        <p>${item.quantity}</p>
+        <p>${item.price.toFixed(2)}</p>
+      </div>
+
+      <button class="remove-from-cart-btn" data-name="${item.name}">
+        Remover
+      </button>
+    </div>
+    `;
+
+    total += item.price * item.quantity;
+
+    cartItemsContainer.appendChild(cartItemElement);
+  });
+
+  cartTotal.textContent = total.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+
+  cartCounter.innerHTML = cart.length;
+};
+
+cartItemsContainer.addEventListener("click", (event) => {
+  if (event.target.classList.contains("remove-from-cart-btn"));
+  const name = event.target.getAttribute("data-name");
+
+  removeItemCart(name);
+});
+
+removeItemCart = (name) => {
+  const index = cart.findIndex((item) => item.name === name);
+  if (index !== -1) {
+    const item = cart[index];
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+      updateCartModal();
+      return;
+    }
+    cart.splice(index, 1);
+    updateCartModal();
+  }
+};
+
+addressInput.addEventListener("input", (event) => {
+  let inputValue = event.target.value;
+  if (inputValue !== "") {
+    addressInput.classList.remove("address-red");
+    addressWarn.style.display = "none";
+  }
+});
+
+checkoutButton.addEventListener("click", () => {
+  const isOpen = checkRestauranteOpen();
+  if (!isOpen) {
+    Toastify({
+      text: "Ops, o restaurante está fechado!",
+      duration: 3000,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background: "#ef4444",
+      },
+    }).showToast();
+
+    return;
+  }
+
+  if (cart.length === 0) return;
+  if (addressInput.value === "") {
+    addressWarn.style.display = "flex";
+    addressInput.classList.add("address-red");
+    return;
+  }
+
+  const cartItems = cart
+    .map((item) => {
+      return ` ${item.name} Quantidade: (${item.quantity}) Preço: R$${item.price}} |`;
+    })
+    .join("");
+
+  const message = encodeURIComponent(cartItems);
+  const phone = "86981825254";
+
+  window.open(
+    `https://wa.me/${phone}?text=${message} Endereço: ${addressInput.value}`,
+    "_blank"
+  );
+
+  cart = [];
+  updateCartModal();
+});
+
+checkRestauranteOpen = () => {
+  const data = new Date();
+  const hora = data.getHours();
+  return hora >= 18 && hora < 22;
+};
+
+const spanItem = document.querySelector("#date-span");
+const isOpen = checkRestauranteOpen();
+
+if (isOpen) {
+  spanItem.classList.remove("");
+  spanItem.classList.add("");
+} else {
+  spanItem.classList.remove("");
+  spanItem.classList.add("");
+}

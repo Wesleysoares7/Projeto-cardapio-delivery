@@ -47,7 +47,6 @@
   position: relative;
   overflow: hidden;
   height: 35rem;
-  transform: scale(90%);
   transition: all ease-in-out 200ms;
   cursor: pointer;
 }

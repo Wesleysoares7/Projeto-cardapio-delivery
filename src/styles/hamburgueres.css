@@ -238,7 +238,7 @@
   transform: scale(100%);
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1170px) {
   #burges_refri {
     align-items: center;
   }
